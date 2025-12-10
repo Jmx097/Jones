@@ -1,0 +1,607 @@
+/* ============================================================================
+   DARK MODE SUPPORT
+   ============================================================================ */
+
+:root {
+    /* Light mode colors (default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --border-color: #e5e7eb;
+    --accent-color: #6366f1;
+    --accent-hover: #4f46e5;
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+}
+
+[data-theme="dark"] {
+    /* Dark mode colors */
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --bg-tertiary: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    --border-color: #4b5563;
+    --accent-color: #818cf8;
+    --accent-hover: #6366f1;
+    --success-color: #34d399;
+    --error-color: #f87171;
+    --warning-color: #fbbf24;
+}
+
+/* Apply theme colors to all elements */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    background-color: var(--bg-primary);
+}
+
+.main-header {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+}
+
+.controls,
+.workbook,
+.lesson-section {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+select,
+input[type="text"],
+textarea {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+button {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Dark mode toggle button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5em;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .theme-toggle {
+    background: var(--bg-tertiary);
+}
+
+/* ============================================================================
+   VISUAL POLISH & UX ENHANCEMENTS
+   Additional CSS for icons, badges, animations, and improved UX
+   ============================================================================ */
+
+/* Subject Icons */
+.subject-icon {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.subject-icon.math::before {
+    content: "🔢 ";
+}
+
+.subject-icon.science::before {
+    content: "🔬 ";
+}
+
+.subject-icon.english::before {
+    content: "📚 ";
+}
+
+.subject-icon.social::before {
+    content: "🌍 ";
+}
+
+/* New Content Badge */
+.new-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(0.95);
+    }
+}
+
+/* Loading Spinner for AI Generation */
+.ai-loading {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.98);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    text-align: center;
+}
+
+.ai-loading.active {
+    display: block;
+}
+
+.ai-loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.ai-loading-text {
+    font-size: 1.1em;
+    color: #374151;
+    font-weight: 500;
+}
+
+.ai-loading-subtext {
+    font-size: 0.9em;
+    color: #6b7280;
+    margin-top: 10px;
+}
+
+/* Backdrop for loading */
+.ai-loading-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.ai-loading-backdrop.active {
+    display: block;
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #1f2937;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #1f2937 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* First Time User Tutorial Overlay */
+.tutorial-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 10001;
+    animation: fadeIn 0.3s;
+}
+
+.tutorial-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutorial-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+.tutorial-content h2 {
+    color: #6366f1;
+    margin-top: 0;
+}
+
+.tutorial-step {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f9fafb;
+    border-left: 4px solid #6366f1;
+    border-radius: 8px;
+}
+
+.tutorial-step-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: #6366f1;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.tutorial-close {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: all 0.3s;
+}
+
+.tutorial-close:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Example Prompts */
+.example-prompts {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+}
+
+.example-prompts h4 {
+    margin-top: 0;
+    color: #1e40af;
+    font-size: 0.9em;
+}
+
+.example-prompt {
+    background: white;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85em;
+    border: 1px solid #e5e7eb;
+}
+
+.example-prompt:hover {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    transform: translateX(5px);
+}
+
+.example-prompt::before {
+    content: "💡 ";
+    margin-right: 5px;
+}
+
+/* Print Optimization */
+@media print {
+
+    /* Hide UI elements */
+    .controls,
+    .mode-switcher,
+    button,
+    select,
+    .advanced-options {
+        display: none !important;
+    }
+
+    /* Optimize page breaks */
+    .workbook-page {
+        page-break-after: always;
+        page-break-inside: avoid;
+    }
+
+    .lesson-section {
+        page-break-inside: avoid;
+    }
+
+    .practice-problem {
+        page-break-inside: avoid;
+    }
+
+    /* Remove backgrounds and shadows */
+    * {
+        background: white !important;
+        box-shadow: none !important;
+        color: black !important;
+    }
+
+    /* Ensure good contrast */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: black !important;
+    }
+
+    /* Show answer key if visible */
+    .answer-key {
+        page-break-before: always;
+    }
+
+    /* Optimize margins */
+    @page {
+        margin: 2cm;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* Preview Panel */
+.preview-panel {
+    display: none;
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    width: 350px;
+    max-height: calc(100vh - 120px);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+    animation: slideInRight 0.3s;
+}
+
+.preview-panel.active {
+    display: block;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.preview-header h3 {
+    margin: 0;
+    color: #6366f1;
+}
+
+.preview-close {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: color 0.2s;
+}
+
+.preview-close:hover {
+    color: #374151;
+}
+
+.preview-content {
+    font-size: 0.9em;
+}
+
+.preview-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 8px 0;
+    background: #f9fafb;
+    border-radius: 6px;
+}
+
+.preview-stat-label {
+    color: #6b7280;
+}
+
+.preview-stat-value {
+    font-weight: 600;
+    color: #111827;
+}
+
+.preview-sample {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+}
+
+.preview-sample h4 {
+    margin-top: 0;
+    color: #1e40af;
+    font-size: 0.9em;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Improved button hover states */
+button:not(.tutorial-close):not(.preview-close) {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:not(.tutorial-close):not(.preview-close):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+}
+
+button:not(.tutorial-close):not(.preview-close):active {
+    transform: translateY(0);
+}
+
+/* Select dropdown improvements */
+select {
+    transition: all 0.3s;
+}
+
+select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Success message */
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    z-index: 10000;
+    animation: slideInDown 0.3s, fadeOut 0.3s 2.7s;
+    opacity: 0;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}

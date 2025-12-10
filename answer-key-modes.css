@@ -1,0 +1,36 @@
+/* ============================================================================
+   ANSWER KEY MODES
+   ============================================================================ */
+
+/* Side-by-side mode */
+.workbook-page.side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.workbook-page.side-by-side .problems-column {
+    border-right: 2px solid var(--border-color);
+    padding-right: 20px;
+}
+
+.workbook-page.side-by-side .answers-column {
+    padding-left: 20px;
+}
+
+.workbook-page.side-by-side .answer-key {
+    display: block !important;
+}
+
+/* Separate page mode */
+.answer-key.separate-page {
+    page-break-before: always;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 3px solid var(--border-color);
+}
+
+/* Inline mode (default) */
+.answer-key.inline {
+    margin-top: 30px;
+}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ontario Curriculum Workbook Generator - Professional learning materials for Grades 5-8">
+    <title>Ontario Curriculum Workbook Generator</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhancements.css">
+    <link rel="stylesheet" href="answer-key-modes.css">
+    <link rel="stylesheet" href="polish.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>📚 Ontario Curriculum Workbook Generator</h1>
+            <p class="subtitle">Professional learning materials aligned with Ontario curriculum expectations</p>
+        </header>
+
+        <div class="instructions">
+            <p><strong>✨ How to use:</strong> Choose from curated workbooks or describe exactly what you need!</p>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <button id="standardMode" class="mode-btn active">📚 Standard Workbooks</button>
+            <button id="customMode" class="mode-btn">✨ AI Custom Worksheet</button>
+        </div>
+
+        <!-- Custom AI Section -->
+        <div id="customSection" class="section-container hidden">
+            <div class="section-header">
+                <h2>✨ AI Custom Worksheet Generator</h2>
+                <p>Describe what you need and the system will create a personalized worksheet!</p>
+            </div>
+
+            <div class="custom-inputs">
+                <div class="control">
+                    <label>Grade Level:</label>
+                    <select id="customGrade">
+                        <option value="">-- Choose Grade --</option>
+                        <option value="5">Grade 5</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label>Describe Your Worksheet:</label>
+                    <textarea id="customDescription" rows="5"
+                        placeholder="Example: Create a math worksheet on multiplying fractions with 5 word problems about cooking and baking. Include step-by-step examples and visual fraction diagrams. Make it challenging but fun!"></textarea>
+                    <div class="hint">💡 Be specific! Mention topic, number of questions, difficulty level, real-world
+                        context, etc.</div>
+                </div>
+            </div>
+
+            <button id="generateCustom" class="btn-primary" disabled>✨ Generate Custom Worksheet</button>
+            <div id="aiLoading" class="ai-loading hidden">
+                <div class="spinner"></div>
+                <p>Creating your custom worksheet...</p>
+            </div>
+        </div>
+
+        <!-- Standard Controls -->
+        <div id="standardSection" class="section-container">
+            <div class="section-header">
+                <h2>📚 Standard Workbooks</h2>
+                <p>Choose from pre-built curriculum-aligned workbooks</p>
+            </div>
+
+            <div class="controls">
+                <div class="control">
+                    <label>1. Pick Grade:</label>
+                    <select id="grade">
+                        <option value="">-- Choose --</option>
+                        <option value="5">Grade 5</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label>2. Pick Subject:</label>
+                    <select id="subject" disabled>
+                        <option value="">-- Choose --</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label>3. Pick Strand/Topic:</label>
+                    <select id="topic" disabled>
+                        <option value="">-- Choose --</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label>4. Choose Format:</label>
+                    <select id="format">
+                        <option value="workbook">Complete Workbook (All Lessons)</option>
+                        <option value="single">Single Worksheet</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Advanced Options Toggle -->
+            <div class="advanced-toggle">
+                <button id="advancedToggle" class="toggle-btn">⚙️ Advanced Options</button>
+            </div>
+
+            <div id="advancedOptions" class="advanced-options hidden">
+                <div class="option-row">
+                    <input type="checkbox" id="includeAnswers" />
+                    <label for="includeAnswers" class="option-label">📝 Include Answer Keys</label>
+                </div>
+
+                <div class="control">
+                    <label>📊 Difficulty Level:</label>
+                    <select id="difficulty">
+                        <option value="mixed">Mixed (Easy to Hard)</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label>📋 Answer Key Mode:</label>
+                    <select id="answerKeyMode">
+                        <option value="inline">Inline (below problems)</option>
+                        <option value="separate-page">Separate Page</option>
+                        <option value="side-by-side">Side-by-Side View</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="generate" class="btn-primary" disabled>🎯 Generate Workbook</button>
+        </div>
+
+        <div id="workbook" class="workbook hidden">
+            <div class="workbook-actions no-print">
+                <button onclick="window.print()" class="btn-action">🖨️ Print</button>
+                <button id="exportPDF" class="btn-action pdf-btn">📄 Export PDF</button>
+                <button id="toggleAnswers" class="btn-action" style="display:none;">👁️ Show/Hide Answers</button>
+                <button onclick="location.reload()" class="btn-action">🔄 Create Another</button>
+            </div>
+
+            <div id="workbook-content" class="workbook-content">
+                <!-- Dynamic workbook content will be inserted here -->
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link" onclick="showHelpModal(); return false;">Help & Shortcuts</a>
+                    <a href="AI_SETUP_GUIDE.md" class="footer-link" target="_blank">AI Setup Guide</a>
+                    <a href="#" class="footer-link" onclick="showTutorial(); return false;">Tutorial</a>
+                </div>
+                <div class="footer-copyright">
+                    © 2024 Ontario Curriculum Workbook Generator
+                    <span class="footer-version">v1.0.0</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="data/curriculum.js"></script>
+    <!-- Content Expansion Modules -->
+    <script src="data/grade7-english-expansion.js"></script>
+    <script src="data/grade8-english-expansion.js"></script>
+    <script>
+        // Integrate expansion content into main curriculum
+        if (typeof grade7EnglishExpansion !== 'undefined' && curriculumData['7'] && curriculumData['7']['English']) {
+            Object.assign(curriculumData['7']['English'], grade7EnglishExpansion);
+            console.log('[Content Expansion] Grade 7 English: Added', Object.keys(grade7EnglishExpansion).length, 'new topics');
+        }
+        if (typeof grade8EnglishExpansion !== 'undefined' && curriculumData['8'] && curriculumData['8']['English']) {
+            Object.assign(curriculumData['8']['English'], grade8EnglishExpansion);
+            console.log('[Content Expansion] Grade 8 English: Added', Object.keys(grade8EnglishExpansion).length, 'new topics');
+        }
+    </script>
+    <!-- AI Integration Module -->
+    <script src="ai-integration.js"></script>
+    <script src="script.js"></script>
+    <!-- UI/UX Enhancements -->
+    <script src="enhancements.js"></script>
+    <!-- Search Functionality -->
+    <script src="search.js"></script>
+    <!-- Help System -->
+    <script src="help.js"></script>
+</body>
+
+</html>
